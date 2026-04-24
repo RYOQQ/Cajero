@@ -1,6 +1,6 @@
 package com.atm.exception;
 
-public class PinInvalidoException extends exception{
+public class PinInvalidoException extends Exception{
     public PinInvalidoException(String mensaje){
         super(mensaje);
     }

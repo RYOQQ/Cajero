@@ -48,7 +48,10 @@ public class CuentaBancaria {
         this.activa = activa;
     }
 
-    public ArrayList<String> getHistorialTransacciones(String registro){
+    public ArrayList<String> getHistorialTransacciones(){
+        return historialTransacciones;
+    }
+    public void agregarTransaccion(String registro) {
         historialTransacciones.add(registro);
     }
 
