@@ -1,105 +1,58 @@
 package com.atm.ui;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
-import com.atm.exception.CuentaInactivaException;
-import com.atm.exception.LimiteExtraccionExcedidoException;
-import com.atm.exception.SaldoInsuficienteException;
 import com.atm.model.CuentaBancaria;
 import com.atm.service.CajeroService;
-import com.atm.util.FormatoUtil;
 
 public class Main {
     public static void main( String[] args )
     {
-        Scanner sc = new Scanner(System.in);
         CajeroService cajeroService = new CajeroService();
 
         CuentaBancaria cuenta1 = new CuentaBancaria("123456", 50000.0, "Roque", true);
 
-        CuentaBancaria cuenta2 = new CuentaBancaria("998877", 20000.0, "RYOQ", true);
+        CuentaBancaria cuenta2 = new CuentaBancaria("998877", 20000.0, "Martin", true);
 
-        int opcion;
-        boolean salir = false;
+        CuentaBancaria cuenta3 = new CuentaBancaria("114455", 10000.0, "Elias", false);
 
-        do{
-            System.out.println("\n==== CAJERO AUTOMATICO ====");  
-            System.out.println("Seleccione una opción: ");
-            System.out.println("1. Depositar");
-            System.out.println("2. Extraer");
-            System.out.println("3. Transferir");
-            System.out.println("4. Consultar saldo");
-            System.out.println("5. Ver últimas 10 transacciones");
-            System.out.println("6. Salir");
+        try {
+            cajeroService.depositar(cuenta1, 5000);
+            cajeroService.extraer(cuenta1, 2000);
+            cajeroService.transferir(cuenta1, cuenta2, 3000);
+            cajeroService.consultarSaldo(cuenta1);
 
-            try{
-                opcion = sc.nextInt();
+            cajeroService.depositar(cuenta2, 1000);
+            cajeroService.extraer(cuenta2, 500);
+            cajeroService.transferir(cuenta2, cuenta1, 2000);
+            cajeroService.consultarSaldo(cuenta2);
 
-                switch (opcion) {
-                    case 1 :{
-                        System.out.print("Ingrese monto a depositar: ");
-                        double monto = sc.nextDouble();
-                        cajeroService.depositar(cuenta1, monto);
-                        System.out.println("Deposito realizado.");
-                        break;
-                    }
+            cajeroService.depositar(cuenta1, 7000);
+            cajeroService.extraer(cuenta1, 10000);
+            cajeroService.consultarSaldo(cuenta1);
 
-                    case 2 :{
-                        System.out.print("Ingrese monto a extraer");;
-                        double monto = sc.nextDouble();
-                        cajeroService.extraer(cuenta1, monto);
-                        System.out.println("Extraccion realizada.");
-                        break;
-                    }
+            cajeroService.depositar(cuenta2, 3000);
+            cajeroService.extraer(cuenta2, 1500);
 
-                   case 3 :{
-                       System.out.print("Ingrese monto a transferir.");
-                       double monto = sc.nextDouble();
-                       cajeroService.transferir(cuenta1, cuenta2, monto);
-                       System.out.println("Transferencia realizada.");
-                       break;
-                    }
-
-                   case 4 :{
-                       double saldo = cajeroService.consultarSaldo(cuenta1);
-                       System.out.println("Saldo actual: " + FormatoUtil.formatearMoneda(saldo));
-                       break;
-                    }
-
-                   case 5 :{
-                       cajeroService.mostrarUltimasTransacciones(cuenta1);
-                       break;
-                    }
-
-                   case 6 :{
-                       salir = true;
-                       System.out.println("Hasta la proxima.");
-                       break;
-                    }
-
-                    default :{ 
-                        System.out.println("Opcion invalida.");
-                        break;
-                    }
-                }
-            }
-                
-            catch (InputMismatchException e){
-                System.out.println("Error: debe ingresar un valor valido.");
-                sc.nextLine();
+            try {
+                cajeroService.extraer(cuenta1, 999999); // saldo insuficiente
+            } catch (Exception e) {
+                System.out.println("Excepción: " + e.getMessage());
             }
 
-            catch(CuentaInactivaException | SaldoInsuficienteException | LimiteExtraccionExcedidoException e){
-                System.out.println("Error: " + e.getMessage());  
+            try {
+                cajeroService.depositar(cuenta3, 1000); // cuenta inactiva
+            } catch (Exception e) {
+                System.out.println("Excepción: " + e.getMessage());
             }
 
-            catch(IllegalArgumentException e){
-                System.out.println("Error: " + e.getMessage());
-            }
-            
-        } while (!salir);
-        sc.close();
-    }
-}
+            // Mostrar historial
+            System.out.println("\n--- HISTORIAL CUENTA 1 ---");
+            cajeroService.mostrarUltimasTransacciones(cuenta1);
 
+            System.out.println("\n--- HISTORIAL CUENTA 2 ---");
+            cajeroService.mostrarUltimasTransacciones(cuenta2);
+
+        } catch (Exception e) {
+        System.out.println("Error general: " + e.getMessage());
+        }
+    } 
+}  

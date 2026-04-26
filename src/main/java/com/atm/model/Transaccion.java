@@ -50,6 +50,7 @@ public class Transaccion {
     @Override
     public String toString() {
         return "Transaccion(" +
+                "tipo=" + tipo +
                 "monto=" + monto +
                 ", fechaHora=" + fechaHora +
                 ", descripcion='" + descripcion + '\'' +
