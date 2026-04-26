@@ -42,6 +42,7 @@ public class Main {
                         double monto = sc.nextDouble();
                         cajeroService.depositar(cuenta1, monto);
                         System.out.println("Deposito realizado.");
+                        break;
                     }
 
                     case 2 :{
@@ -49,31 +50,37 @@ public class Main {
                         double monto = sc.nextDouble();
                         cajeroService.extraer(cuenta1, monto);
                         System.out.println("Extraccion realizada.");
+                        break;
                     }
 
                    case 3 :{
-                        System.out.print("Ingrese monto a transferir.");
-                        double monto = sc.nextDouble();
-                        cajeroService.transferir(cuenta1, cuenta2, monto);
-                        System.out.println("Transferencia realizada.");
+                       System.out.print("Ingrese monto a transferir.");
+                       double monto = sc.nextDouble();
+                       cajeroService.transferir(cuenta1, cuenta2, monto);
+                       System.out.println("Transferencia realizada.");
+                       break;
                     }
 
                    case 4 :{
-                        double saldo = cajeroService.consultarSaldo(cuenta1);
-                        System.out.println("Saldo actual: " + FormatoUtil.formatearMoneda(saldo));
+                       double saldo = cajeroService.consultarSaldo(cuenta1);
+                       System.out.println("Saldo actual: " + FormatoUtil.formatearMoneda(saldo));
+                       break;
                     }
 
                    case 5 :{
-                        cajeroService.mostrarUltimasTransacciones(cuenta1);
+                       cajeroService.mostrarUltimasTransacciones(cuenta1);
+                       break;
                     }
 
                    case 6 :{
-                        salir = true;
-                        System.out.println("Hasta la proxima.");
+                       salir = true;
+                       System.out.println("Hasta la proxima.");
+                       break;
                     }
 
                     default :{ 
                         System.out.println("Opcion invalida.");
+                        break;
                     }
                 }
             }
